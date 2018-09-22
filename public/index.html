@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
     <title>Moyenne.info</title>
-  </head>
-  <body>
+</head>
+<body>
     <noscript>
-      <strong>We're sorry but moyenne.info doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        <strong>
+            We're sorry but moyenne.info doesn't work properly without JavaScript enabled. Please enable it to
+            continue.
+        </strong>
     </noscript>
     <div id="app"></div>
+    <!-- Matomo -->
+    <script type="text/javascript">
+        let _paq = _paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            let u = "//analytics.attranet.com/";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '5']);
+            let d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'piwik.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
+
     <!-- built files will be auto injected -->
-  </body>
+</body>
 </html>
