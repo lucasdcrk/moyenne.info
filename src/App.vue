@@ -20,7 +20,7 @@
 
     <q-layout-drawer v-if="logged" v-model="leftDrawerOpen" content-class="bg-grey-2">
       <div class="row flex-center bg-white" style="height: 115px">
-        <img :src="user.photo" style="height: 75px; width: 75px;">
+        <img :src="user.photo" style="width: 75px;">
         <div class="caption q-ml-md">
           {{ user.prenom+' '+user.nom }} ({{ user.classe.code }})
         </div>
