@@ -76,8 +76,6 @@
                   });
                   window.bus.$emit('logged-out');
                   this.$router.push('/login');
-              }).catch(() => {
-                  this.$q.notify('Disagreed...')
               });
           }
       },
@@ -85,7 +83,7 @@
           this.$q.addressbarColor.set('#0069ff');
 
           window.bus.$on('logged-in', () => {
-              this.logged = true;
+              this.logged = true
           });
 
           window.bus.$on('logged-out', () => {

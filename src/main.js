@@ -16,6 +16,10 @@ window.axios = axios.create({
 
 window.bus = new Vue();
 
+window.bus.$on('logged-in', () => {
+    Vue.prototype.user = JSON.parse(localStorage.user);
+});
+
 Vue.use(Quasar, {
   config: {}, i18n: lang
 });
