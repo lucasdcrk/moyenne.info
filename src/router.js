@@ -41,7 +41,30 @@ router.beforeEach((to, from, next) => {
             console.log('No token, redirecting to login page.');
             next('/login');
         } else {
-            next();
+            window.bus.$q.loading.show({
+                message: 'Vérification de vos informations ...'
+            });
+
+            window.axios.post('E/' + JSON.parse(localStorage.user).id + '/emploidutemps.awp?verbe=get', 'data={"token": "' + localStorage.token + '"}')
+                .then((response) => {
+                    if (response.data.code !== 200) {
+                        window.bus.$q.notify({
+                            message: 'Session expirée, merci de vous reconnecter.',
+                            type: 'negative'
+                        });
+
+                        window.$emit('loggout');
+
+                        this.$router.push('/login');
+                    }
+
+                    window.bus.$q.loading.hide();
+                    next();
+                })
+                .catch(error => {
+                    this.$q.notify('Une erreur s\'est produite lors de la vérification : ' + error);
+                    this.$q.loading.hide();
+                });
         }
     } else {
         next();

@@ -94,6 +94,15 @@
                         this.loading = false;
                     });
             }
+        },
+        mounted() {
+            if(this.logged) {
+                this.$q.notify({
+                    message: 'Vous êtes déjà connecté, redirection vers l\'accueil',
+                    type: 'info'
+                });
+                this.$router.push('/');
+            }
         }
     }
 </script>
