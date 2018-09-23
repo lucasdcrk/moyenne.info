@@ -40,7 +40,7 @@ window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '1.0.1';
+Vue.prototype.version = '1.0.2';
 
 new Vue({
   router,

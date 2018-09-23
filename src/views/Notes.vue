@@ -2,7 +2,7 @@
     <q-page padding>
         <div class="row justify-center">
             <div class="col-md-8">
-                <q-card square color="grey-1" text-color="black">
+                <q-card square text-color="black">
                     <q-card-separator />
                     <q-card-main>
                         <q-tabs color="primary" underline-color="warning" align="justify">
