@@ -53,17 +53,20 @@ router.beforeEach((to, from, next) => {
                             type: 'negative'
                         });
 
-                        window.$emit('loggout');
+                        localStorage.clear();
 
-                        this.$router.push('/login');
+                        window.bus.$emit('logged-out');
+
+                        next('/login');
+                        window.bus.$q.loading.hide();
+                    } else {
+                        window.bus.$q.loading.hide();
+                        next();
                     }
-
-                    window.bus.$q.loading.hide();
-                    next();
                 })
                 .catch(error => {
-                    this.$q.notify('Une erreur s\'est produite lors de la vérification : ' + error);
-                    this.$q.loading.hide();
+                    window.bus.$q.notify('Une erreur s\'est produite lors de la vérification : ' + error);
+                    window.bus.$q.loading.hide();
                 });
         }
     } else {
