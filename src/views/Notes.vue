@@ -125,10 +125,10 @@
                                     notes.forEach(function (note) {
                                         if (matiere.codeMatiere === note.codeMatiere && periode.idPeriode === note.codePeriode) {
                                             if (!note.enLettre) {
-                                                note.valeur = (20 / parseInt(note.noteSur)) * note.valeur;
+                                                note.valeur = (20 / parseFloat(note.noteSur)) * parseFloat(note.valeur);
                                                 matiere.notes.push(note);
-                                                matiere.totalNotes = matiere.totalNotes + (note.valeur * note.coef);
-                                                matiere.totalCoefs = matiere.totalCoefs + note.coef;
+                                                matiere.totalNotes = matiere.totalNotes + parseFloat(note.valeur) * parseFloat(note.coef);
+                                                matiere.totalCoefs = matiere.totalCoefs + parseFloat(note.coef);
                                             }
                                         }
                                     });
@@ -136,12 +136,12 @@
                                     if (matiere.notes.length > 0) {
                                         matiere.moyenne = matiere.totalNotes / matiere.totalCoefs;
                                         periode.matieres.push(matiere);
-                                        periode.totalMoyennes = periode.totalMoyennes + (matiere.moyenne * matiere.coef);
-                                        periode.totalCoefs = periode.totalCoefs + matiere.coef;
+                                        periode.totalMoyennes = periode.totalMoyennes + matiere.moyenne * parseFloat(matiere.coef);
+                                        periode.totalCoefs = periode.totalCoefs + parseFloat(matiere.coef);
                                     }
                                 });
 
-                                periode.moyenne = periode.totalMoyennes / periode.totalCoefs;
+                                periode.moyenne = Math.round((periode.totalMoyennes / periode.totalCoefs) * 100) / 100;
                                 console.log(periode)
                             });
 
