@@ -1,14 +1,13 @@
 <template>
-    <q-page padding>
+    <q-page v-if="periodes.length > 0" padding>
         <div class="row justify-center">
             <div class="col-md-8">
-                <q-card square text-color="black">
-                    <q-card-separator />
-                    <q-card-main>
-                        <q-tabs color="primary" underline-color="warning" align="justify">
-                            <!-- Tabs - notice slot="title" -->
-                            <q-tab :default="periode === periodes[0]" slot="title" v-for="periode in periodes" :key="periode.idPeriode" :name="periode.idPeriode">{{ periode.periode }}</q-tab>
+                <q-tabs color="primary" underline-color="warning" align="justify">
+                    <!-- Tabs - notice slot="title" -->
+                    <q-tab :default="periode === periodes[0]" slot="title" v-for="periode in periodes" :key="periode.idPeriode" :name="periode.idPeriode">{{ periode.periode }}</q-tab>
 
+                    <q-card square color="grey-3" text-color="black">
+                        <q-card-main>
                             <!-- Targets -->
                             <q-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :name="periode.idPeriode">
                                 <div v-if="periode.moyenne">
@@ -37,9 +36,9 @@
                                     </div>
                                 </div>
                             </q-tab-pane>
-                        </q-tabs>
-                    </q-card-main>
-                </q-card>
+                        </q-card-main>
+                    </q-card>
+                </q-tabs>
             </div>
         </div>
     </q-page>
