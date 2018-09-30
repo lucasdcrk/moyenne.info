@@ -133,7 +133,7 @@
                                     });
 
                                     if (matiere.notes.length > 0) {
-                                        matiere.moyenne = matiere.totalNotes / matiere.totalCoefs;
+                                        matiere.moyenne = Math.round((matiere.totalNotes / matiere.totalCoefs) * 100) / 100;
                                         periode.matieres.push(matiere);
                                         periode.totalMoyennes = periode.totalMoyennes + matiere.moyenne * parseFloat(matiere.coef);
                                         periode.totalCoefs = periode.totalCoefs + parseFloat(matiere.coef);
