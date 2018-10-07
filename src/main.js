@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
+import SuiVue from 'semantic-ui-vue';
 
 import './styles/quasar.styl'
 import lang from 'quasar-framework/i18n/fr'
@@ -9,6 +10,10 @@ import 'quasar-extras/animate'
 import 'quasar-extras/roboto-font'
 import 'quasar-extras/material-icons'
 import Quasar from 'quasar'
+
+import 'semantic-ui-css/semantic.min.css';
+
+Vue.use(SuiVue);
 
 window.axios = axios.create({
     baseURL: 'https://vmws01.ecoledirecte.com/v3/',
@@ -40,7 +45,7 @@ window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '1.0.2';
+Vue.prototype.version = '1.0.3';
 
 new Vue({
   router,

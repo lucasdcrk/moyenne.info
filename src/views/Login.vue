@@ -1,29 +1,28 @@
 <template>
     <q-page padding>
         <div class="row justify-center">
-            <q-card class="col-sm-10 col-md-6 col-lg-4 col-xl-3">
-                <div class="q-pa-lg">
-                    <q-card-title class="text-center">
-                        Connexion à EcoleDirecte
-                    </q-card-title>
+            <sui-segment class="col-sm-10 col-md-6 col-lg-3">
+                <div class="q-pa-xl">
+                    <h3 class="text-center" is="sui-header">Connexion à EcoleDirecte</h3>
 
-                    <q-card-main>
-                        <q-alert v-if="errorMessage" class="q-py-sm" type="negative" icon="warning">
-                            {{errorMessage}}
-                        </q-alert>
+                    <q-alert v-if="errorMessage" class="q-py-sm" type="negative" icon="warning">
+                        {{errorMessage}}
+                    </q-alert>
 
-                        <q-field class="q-py-sm">
-                            <q-input float-label="Nom d'utilisateur" v-model="username" type="text"></q-input>
-                        </q-field>
+                    <sui-form class="q-pt-lg">
+                        <sui-form-field>
+                            <label>Nom d'utilisateur</label>
+                            <input type="text" v-model="username" placeholder="">
+                        </sui-form-field>
+                        <sui-form-field>
+                            <label>Mot de passe</label>
+                            <input type="password" v-model="password" placeholder="********">
+                        </sui-form-field>
 
-                        <q-field class="q-py-sm">
-                            <q-input float-label="Mot de passe" v-model="password" type="password"></q-input>
-                        </q-field>
-
-                        <q-btn class="full-width q-mt-lg" :loading="loading" @click="login()" size="md" color="primary">Connexion</q-btn>
-                    </q-card-main>
+                        <sui-button type="button" :loading="loading" @click="login()" size="large" primary fluid>Connexion</sui-button>
+                    </sui-form>
                 </div>
-            </q-card>
+            </sui-segment>
         </div>
     </q-page>
 </template>

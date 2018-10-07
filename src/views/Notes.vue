@@ -1,44 +1,60 @@
 <template>
-    <q-page v-if="periodes.length > 0" padding>
+    <q-page padding>
+        <div class="text-center q-pb-lg">
+            <h1 is="sui-header" style="font-size: 4em">Notes</h1>
+        </div>
+
         <div class="row justify-center">
             <div class="col-md-8">
-                <q-tabs color="primary" underline-color="warning" align="justify">
-                    <!-- Tabs - notice slot="title" -->
-                    <q-tab :default="periode === periodes[0]" slot="title" v-for="periode in periodes" :key="periode.idPeriode" :name="periode.idPeriode">{{ periode.periode }}</q-tab>
+                <div v-if="periodes.length === 0">
+                    <sui-tab>
+                        <sui-tab-pane v-for="n in 3" :key="n" :title="'Trimestre '+n " loading/>
+                    </sui-tab>
+                </div>
 
-                    <q-card square color="grey-3" text-color="black">
-                        <q-card-main>
-                            <!-- Targets -->
-                            <q-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :name="periode.idPeriode">
-                                <div v-if="periode.moyenne">
-                                    <div class="q-ma-md">
-                                        <div class="q-headline">Information trimestre :</div>
-                                        <ul>
-                                            <li>Moyenne générale : <strong>{{ periode.moyenne }}/20</strong></li>
-                                            <li>Etat du trimestre : <strong>{{ periode.cloture ? 'Cloturé' : 'Ouvert' }}</strong></li>
-                                            <li>Date conseil de classe : <strong>{{ periode.dateConseil }}</strong></li>
-                                            <li>Prof. Principal : <strong>{{ periode.ensembleMatieres.nomPP.replace('¤', ' & ') }}</strong></li>
-                                        </ul>
+                <sui-tab v-else>
+                    <sui-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :title="'Trimestre '+periode.periode.charAt(0)">
+                        <sui-accordion exclusive fluid styled>
+                            <div v-if="periode.moyenne">
+                                <div v-for="matiere in periode.ensembleMatieres.disciplines" :key="matiere.id">
+                                    <div v-if="matiere.moyenne">
+                                        <sui-accordion-title>
+                                            <sui-icon name="dropdown"/>
+                                            {{ matiere.discipline }}
+                                        </sui-accordion-title>
+
+                                        <sui-accordion-content>
+                                            <sui-table celled>
+                                                <sui-table-header>
+                                                    <sui-table-row>
+                                                        <sui-table-header-cell>Libellé</sui-table-header-cell>
+                                                        <sui-table-header-cell>Coefficient</sui-table-header-cell>
+                                                        <sui-table-header-cell>Note</sui-table-header-cell>
+                                                    </sui-table-row>
+                                                </sui-table-header>
+
+                                                <sui-table-body>
+                                                    <sui-table-row :state="matiere.moyenne ? '' : 'disabled'" v-for="note in matiere.notes" :key="note.id">
+                                                        <sui-table-cell>{{note.devoir}}</sui-table-cell>
+                                                        <sui-table-cell>{{note.coef}}</sui-table-cell>
+                                                        <sui-table-cell><h3 is="sui-header" text-align="center">{{note.valeur+'/'+note.noteSur}}</h3></sui-table-cell>
+                                                    </sui-table-row>
+                                                </sui-table-body>
+                                            </sui-table>
+                                        </sui-accordion-content>
                                     </div>
-
-                                    <div class="q-ma-md q-mt-xl">
-                                        <div class="q-headline">Détail des matières :</div>
-                                    </div>
-
-                                    <q-table :data="periode.ensembleMatieres.disciplines" :columns="columns" row-key="name" rows-per-page="0" :pagination.sync="pagination" :rows-per-page-options="[]" grid/>
                                 </div>
+                            </div>
 
-                                <div v-else class="row justify-center q-my-xl">
-                                    <div class="col-md-5 q-my-xl">
-                                        <q-alert type="warning">
-                                            Aucune donnée à afficher pour cette période, réessayez plus tard.
-                                        </q-alert>
-                                    </div>
+                            <div class="ui placeholder segment" v-else>
+                                <div class="ui icon header">
+                                    <i class="exclamation triangle icon"></i>
+                                    Pas de données pour cette période.
                                 </div>
-                            </q-tab-pane>
-                        </q-card-main>
-                    </q-card>
-                </q-tabs>
+                            </div>
+                        </sui-accordion>
+                    </sui-tab-pane>
+                </sui-tab>
             </div>
         </div>
     </q-page>
@@ -50,49 +66,7 @@
         data() {
             return {
                 loading: false,
-                trimestres: [1, 2, 3],
-                periodes: [],
-                columns: [
-                    {
-                        name: 'matiere',
-                        required: true,
-                        label: 'Matière',
-                        align: 'left',
-                        field: 'discipline',
-                        sortable: true
-                    },
-                    {
-                        name: 'prof',
-                        required: true,
-                        label: 'Professeur(s)',
-                        align: 'left',
-                        field: row => row.professeurs.length > 1 ? row.professeurs[0].nom +' & '+ row.professeurs[1].nom : row.professeurs[0].nom,
-                        sortable: true
-                    },
-                    {
-                        name: 'coef',
-                        required: true,
-                        label: 'Coefficient matière',
-                        align: 'center',
-                        field: 'coef',
-                        sortable: true
-                    },
-                    {
-                        name: 'moyenne',
-                        required: true,
-                        label: 'Moyenne trimestrielle',
-                        align: 'center',
-                        field: 'moyenne',
-                        format: val => (val !== undefined) ? `${val}/20` : '',
-                        sortable: true
-                    }
-                ],
-                pagination: {
-                    sortBy: 'coef', // String, column "name" property value
-                    descending: true,
-                    page: 1,
-                    rowsPerPage: 0
-                }
+                periodes: []
             }
         },
         mounted() {
@@ -100,8 +74,6 @@
         },
         methods: {
             getNotes() {
-                this.$q.loading.show();
-
                 window.axios.post('eleves/'+this.user.id+'/notes.awp?verbe=get&', 'data={"token": "'+this.token+'"}')
                     .then((response) => {
                         if (response.data.code === 200) {
@@ -141,7 +113,6 @@
                                 });
 
                                 periode.moyenne = Math.round((periode.totalMoyennes / periode.totalCoefs) * 100) / 100;
-                                console.log(periode)
                             });
 
                             this.periodes = periodes;
@@ -151,12 +122,9 @@
                                 type: 'negative'
                             })
                         }
-
-                        this.$q.loading.hide();
                     })
                     .catch(error => {
                         this.$q.notify('Une erreur s\'est produite : ' + error);
-                        this.$q.loading.hide();
                     });
             }
         }

@@ -11,6 +11,8 @@
     "axios": "^0.18.0",
     "quasar-extras": "^2.0.4",
     "quasar-framework": "^0.17.0",
+    "semantic-ui-css": "^2.4.0",
+    "semantic-ui-vue": "^0.4.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },

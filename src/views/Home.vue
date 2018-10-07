@@ -34,6 +34,7 @@
             return {
                 sections: [
                     { title: 'Compte', icon: 'face', link: 'account' },
+                    { title: 'Moyennes', icon: 'trending_up', link: 'moyennes' },
                     { title: 'Notes', icon: 'list', link: 'notes' }
                 ]
             }

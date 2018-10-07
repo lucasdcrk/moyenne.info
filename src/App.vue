@@ -1,7 +1,7 @@
 <template>
     <q-layout view="lHh Lpr lFf">
         <q-layout-header>
-            <q-toolbar color="primary">
+            <q-toolbar color="blue-grey">
                 <q-btn v-if="logged" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu"></q-btn>
 
                 <q-toolbar-title>
@@ -10,9 +10,6 @@
                 </q-toolbar-title>
 
                 <div v-if="logged">
-                    <q-chip :avatar="user.photo" pointing="right" color="blue">
-                        {{user.prenom+' '+user.nom+' ('+user.classe.code+')' }}
-                    </q-chip>
                     <q-btn flat @click="logout()">Déconnexion</q-btn>
                 </div>
             </q-toolbar>
@@ -36,6 +33,10 @@
                     <q-item to="/account" exact>
                         <q-item-side icon="face"/>
                         <q-item-main label="Compte"/>
+                    </q-item>
+                    <q-item to="/moyennes" exact>
+                        <q-item-side icon="trending_up"/>
+                        <q-item-main label="Moyennes"/>
                     </q-item>
                     <q-item to="/notes">
                         <q-item-side icon="list"/>
@@ -81,6 +82,27 @@
         },
         mounted() {
             this.$q.addressbarColor.set('#0069ff');
+
+            if(this.logged) {
+                window.axios.post('E/' + JSON.parse(localStorage.user).id + '/emploidutemps.awp?verbe=get', 'data={"token": "' + localStorage.token + '"}')
+                    .then((response) => {
+                        if (response.data.code !== 200) {
+                            window.bus.$q.notify({
+                                message: 'Session expirée, merci de vous reconnecter.',
+                                type: 'negative'
+                            });
+
+                            localStorage.clear();
+
+                            window.bus.$emit('logged-out');
+
+                            this.$router.push('/login');
+                        }
+                    })
+                    .catch(error => {
+                        window.bus.$q.notify('Une erreur s\'est produite lors de la vérification, merci de recharger la page : ' + error);
+                    });
+            }
 
             window.bus.$on('loggout', () => {
                 this.logout();
