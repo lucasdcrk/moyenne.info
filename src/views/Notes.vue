@@ -13,14 +13,14 @@
                 </div>
 
                 <sui-tab v-else>
-                    <sui-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :title="'Trimestre '+periode.periode.charAt(0)">
+                    <sui-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :title="'Trimestre '+periode.periode.charAt(0)+' - '+periode.moyenne+'/20'">
                         <sui-accordion exclusive fluid styled>
                             <div v-if="periode.moyenne">
                                 <div v-for="matiere in periode.ensembleMatieres.disciplines" :key="matiere.id">
                                     <div v-if="matiere.moyenne">
                                         <sui-accordion-title>
                                             <sui-icon name="dropdown"/>
-                                            {{ matiere.discipline }}
+                                            {{matiere.discipline}} <span class="float-right">{{matiere.moyenne}}/20</span>
                                         </sui-accordion-title>
 
                                         <sui-accordion-content>
@@ -96,9 +96,15 @@
                                     notes.forEach(function (note) {
                                         if (matiere.codeMatiere === note.codeMatiere && periode.idPeriode === note.codePeriode) {
                                             if (!note.enLettre) {
-                                                note.valeur = (20 / parseFloat(note.noteSur)) * parseFloat(note.valeur);
+                                                let valeur = parseFloat(note.valeur.replace(/,/, '.'));
+                                                let noteSur = parseFloat(note.noteSur.replace(/,/, '.'));
+                                                let coef = parseFloat(note.coef.replace(/,/, '.'));
+
+                                                note.valeur = (20 / noteSur) * valeur;
+                                                note.noteSur = (20 / noteSur) * noteSur;
+
                                                 matiere.notes.push(note);
-                                                matiere.totalNotes = matiere.totalNotes + parseFloat(note.valeur) * parseFloat(note.coef);
+                                                matiere.totalNotes = matiere.totalNotes + valeur * coef;
                                                 matiere.totalCoefs = matiere.totalCoefs + parseFloat(note.coef);
                                             }
                                         }

@@ -120,9 +120,15 @@
                                     notes.forEach(function (note) {
                                         if (matiere.codeMatiere === note.codeMatiere && periode.idPeriode === note.codePeriode) {
                                             if (!note.enLettre) {
-                                                note.valeur = (20 / parseFloat(note.noteSur)) * parseFloat(note.valeur);
+                                                let valeur = parseFloat(note.valeur.replace(/,/, '.'));
+                                                let noteSur = parseFloat(note.noteSur.replace(/,/, '.'));
+                                                let coef = parseFloat(note.coef.replace(/,/, '.'));
+
+                                                note.valeur = (20 / noteSur) * valeur;
+                                                note.noteSur = (20 / noteSur) * noteSur;
+
                                                 matiere.notes.push(note);
-                                                matiere.totalNotes = matiere.totalNotes + parseFloat(note.valeur) * parseFloat(note.coef);
+                                                matiere.totalNotes = matiere.totalNotes + valeur * coef;
                                                 matiere.totalCoefs = matiere.totalCoefs + parseFloat(note.coef);
                                             }
                                         }
