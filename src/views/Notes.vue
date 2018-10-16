@@ -104,8 +104,8 @@
                                                 note.noteSur = (20 / noteSur) * noteSur;
 
                                                 matiere.notes.push(note);
-                                                matiere.totalNotes = matiere.totalNotes + valeur * coef;
-                                                matiere.totalCoefs = matiere.totalCoefs + parseFloat(note.coef);
+                                                matiere.totalNotes = matiere.totalNotes + note.valeur * coef;
+                                                matiere.totalCoefs = matiere.totalCoefs + coef;
                                             }
                                         }
                                     });
@@ -115,6 +115,7 @@
                                         periode.matieres.push(matiere);
                                         periode.totalMoyennes = periode.totalMoyennes + matiere.moyenne * parseFloat(matiere.coef);
                                         periode.totalCoefs = periode.totalCoefs + parseFloat(matiere.coef);
+                                        console.log(periode);
                                     }
                                 });
 

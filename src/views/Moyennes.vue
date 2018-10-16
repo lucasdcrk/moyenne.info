@@ -128,8 +128,8 @@
                                                 note.noteSur = (20 / noteSur) * noteSur;
 
                                                 matiere.notes.push(note);
-                                                matiere.totalNotes = matiere.totalNotes + valeur * coef;
-                                                matiere.totalCoefs = matiere.totalCoefs + parseFloat(note.coef);
+                                                matiere.totalNotes = matiere.totalNotes + note.valeur * coef;
+                                                matiere.totalCoefs = matiere.totalCoefs + coef;
                                             }
                                         }
                                     });
