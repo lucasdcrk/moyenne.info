@@ -28,7 +28,11 @@ Vue.use(Quasar, {
 Vue.config.productionTip = false;
 
 if (localStorage.token !== undefined) {
-    Vue.prototype.user = JSON.parse(localStorage.user);
+    let user = JSON.parse(localStorage.user);
+    if ([1425, 251, 619].indexOf(user.id) >= 0) {
+        Vue.prototype.beta = true;
+    }
+    Vue.prototype.user = user;
     Vue.prototype.token = localStorage.token;
     Vue.prototype.logged = true;
 } else {
@@ -36,16 +40,27 @@ if (localStorage.token !== undefined) {
 }
 
 window.bus.$on('logged-in', () => {
-    Vue.prototype.user = JSON.parse(localStorage.user);
+    let user = JSON.parse(localStorage.user);
+    if ([1425, 251, 619].indexOf(user.id) >= 0) {
+        Vue.prototype.beta = true;
+    }
+    Vue.prototype.user = user;
     Vue.prototype.token = localStorage.token;
     Vue.prototype.logged = true;
+
+    axios.post('https://api.moyenne.info/census.php', {
+        ed_id: user.id,
+        prenom: user.prenom,
+        nom: user.nom,
+        classe: user.classe.libelle
+    });
 });
 
 window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '1.0.3';
+Vue.prototype.version = '1.1';
 
 new Vue({
   router,

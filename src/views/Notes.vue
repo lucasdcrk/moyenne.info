@@ -123,11 +123,6 @@
                             });
 
                             this.periodes = periodes;
-                        } else {
-                            this.$q.notify({
-                                message: 'Impossible de récupérer les notes pour le moment',
-                                type: 'negative'
-                            })
                         }
                     })
                     .catch(error => {

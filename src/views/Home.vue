@@ -1,6 +1,7 @@
 <template>
     <div class="showcase-top text-center">
         <img src="../assets/logo.png">
+        <div class="q-display-1">Moyenne.info v{{ version }}</div>
 
         <p class="caption">
             Bienvenue sur Moyenne.info, utilisez les boutons ci-dessous pour accèder à la section désirée.
@@ -10,13 +11,13 @@
 
         <div class="row justify-center">
             <div style="width: 850px; max-width: 90vw;" class="row">
-                <div v-for="section in sections" :key="section.link" class="col-xs-6 col-sm-4 col-lg-3">
+                <div v-for="section in sections" :key="section.link" class="col-xs-6 col-sm-4 col-md-3">
                     <div class="card text-center category-link text-primary" @click="show(section.link)">
                         <q-icon :name="section.icon"/>
                         <p class="caption">{{ section.title }}</p>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-4 col-lg-3">
+                <div class="col-xs-6 col-sm-4 col-md-3">
                     <div class="card text-center category-link text-grey" @click="logout()">
                         <q-icon name="exit_to_app"/>
                         <p class="caption">Déconnexion</p>
@@ -60,12 +61,12 @@
     }
 
     img {
-        width: 100px;
-        height: 100px;
+        height: 150px;
         margin-bottom: 15px;
     }
 
     .showcase-top {
+        margin-top: 50px;
         margin-bottom: 35px;
     }
 

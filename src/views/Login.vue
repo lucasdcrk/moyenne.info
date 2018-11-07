@@ -1,28 +1,35 @@
 <template>
     <q-page padding>
         <div class="row justify-center">
-            <sui-segment class="col-sm-10 col-md-6 col-lg-3">
+            <q-card class="col-sm-10 col-md-6 col-lg-4 col-xl-3">
                 <div class="q-pa-xl">
-                    <h3 class="text-center" is="sui-header">Connexion à EcoleDirecte</h3>
+                    <div class="text-center">
+                        <img height="100px" src="../assets/logo.png">
+                        <div class="q-display-1">Moyenne.info</div>
+                        <div class="q-headline text-grey">Connexion avec EcoleDirecte</div>
+                    </div>
 
-                    <q-alert v-if="errorMessage" class="q-py-sm" type="negative" icon="warning">
-                        {{errorMessage}}
-                    </q-alert>
+                    <q-card-main>
+                        <q-alert v-if="errorMessage" class="q-py-sm" type="negative" icon="warning">
+                            {{errorMessage}}
+                        </q-alert>
 
-                    <sui-form class="q-pt-lg">
-                        <sui-form-field>
-                            <label>Nom d'utilisateur</label>
-                            <input type="text" v-model="username" placeholder="">
-                        </sui-form-field>
-                        <sui-form-field>
-                            <label>Mot de passe</label>
-                            <input type="password" v-model="password" placeholder="********">
-                        </sui-form-field>
+                        <q-field class="q-py-sm">
+                            <q-input float-label="Nom d'utilisateur" v-model="username" type="text"></q-input>
+                        </q-field>
 
-                        <sui-button type="button" :loading="loading" @click="login()" size="large" primary fluid>Connexion</sui-button>
-                    </sui-form>
+                        <q-field class="q-py-sm">
+                            <q-input float-label="Mot de passe" v-model="password" type="password"></q-input>
+                        </q-field>
+
+                        <div class="text-center q-my-lg">
+                            <p class="text-italic text-grey"><q-icon name="lock" color="green" /> Connexion sécurisée</p>
+                        </div>
+
+                        <q-btn class="full-width" :loading="loading" @click="login()" size="md" color="primary">Connexion</q-btn>
+                    </q-card-main>
                 </div>
-            </sui-segment>
+            </q-card>
         </div>
     </q-page>
 </template>
@@ -45,7 +52,7 @@
 
                 window.axios.post('login.awp', 'data={"identifiant": "'+this.username+'", "motdepasse": "'+this.password+'"}')
                     .then((response) => {
-                        if(response.data.code === 200) {
+                        if (response.data.code === 200) {
                             let accounts = response.data.data.accounts[0].profile.eleves;
                             let eleves = [];
 
@@ -69,6 +76,7 @@
                                 });
 
                                 localStorage.user = JSON.stringify(account);
+                                localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
 
                                 this.$q.notify({
                                     message: 'Connexion réussie, bonjour '+account.prenom+' !',
@@ -82,7 +90,7 @@
                             });
                         } else {
                             this.$q.notify({
-                                message: 'Identifiants incorrects, vérifiez votre saisie.',
+                                message: 'Vos identifiants sont incorrects, vérifiez votre saisie.',
                                 type: 'negative'
                             })
                         }
@@ -95,9 +103,9 @@
             }
         },
         mounted() {
-            if(this.logged) {
+            if (this.logged) {
                 this.$q.notify({
-                    message: 'Vous êtes déjà connecté, redirection vers l\'accueil',
+                    message: 'Vous êtes déjà connecté.',
                     type: 'info'
                 });
                 this.$router.push('/');
