@@ -1,64 +1,66 @@
 <template>
     <q-page padding>
         <div class="text-center q-pb-lg">
-            <h1 is="sui-header" style="font-size: 4em">Notes</h1>
+            <div class="q-display-3">Notes</div>
         </div>
 
-        <div class="row justify-center">
-            <div class="col-md-8">
-                <div v-if="periodes.length === 0">
-                    <sui-tab>
-                        <sui-tab-pane v-for="n in 3" :key="n" :title="'Trimestre '+n " loading/>
-                    </sui-tab>
+        <div class="row gutter-md justify-center">
+            <div class="col-md-10">
+
+                <div class="q-table-container q-ma-lg" v-for="periode in periodes" :key="periode.idPeriode" v-if="periode.moyenne">
+                    <div class="q-table-top relative-position row items-center">
+                        <div class="q-table-control">
+                            <div class="q-table-title">
+                                Notes Trimestre {{periode.periode.charAt(0)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="q-table-middle scroll">
+                        <table class="q-table q-table-horizontal-separator">
+                            <thead>
+                            <tr>
+                                <th class="text-left">
+                                    Matière
+                                </th>
+                                <th class="text-left">
+                                    Moyenne
+                                </th>
+                                <th class="text-right">
+                                    Notes
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="matiere in periode.ensembleMatieres.disciplines" :key="matiere.id" v-if="matiere.moyenne">
+                                <td class="text-left">
+                                    {{matiere.discipline}} (Coef {{matiere.coef}})
+                                </td>
+                                <td class="text-left">
+                                    {{matiere.moyenne+'/20'}}
+                                </td>
+                                <td class="text-right">
+                                    <q-chip class="chip q-mx-sm" square v-for="note in matiere.notes" :key="note.id">
+                                        {{note.valeur+'/'+note.noteSur}}<sup>({{note.coef}})</sup>
+                                        <q-tooltip :offset="[0, 15]">
+                                            {{note.devoir}} ({{note.date}}, coef {{note.coef}})
+                                        </q-tooltip>
+                                    </q-chip>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
-                <sui-tab v-else>
-                    <sui-tab-pane v-for="periode in periodes" :key="periode.idPeriode" :title="'Trimestre '+periode.periode.charAt(0)+' - '+periode.moyenne+'/20'">
-                        <sui-accordion exclusive fluid styled>
-                            <div v-if="periode.moyenne">
-                                <div v-for="matiere in periode.ensembleMatieres.disciplines" :key="matiere.id">
-                                    <div v-if="matiere.moyenne">
-                                        <sui-accordion-title>
-                                            <sui-icon name="dropdown"/>
-                                            {{matiere.discipline}} <span class="float-right">{{matiere.moyenne}}/20</span>
-                                        </sui-accordion-title>
-
-                                        <sui-accordion-content>
-                                            <sui-table celled>
-                                                <sui-table-header>
-                                                    <sui-table-row>
-                                                        <sui-table-header-cell>Libellé</sui-table-header-cell>
-                                                        <sui-table-header-cell>Coefficient</sui-table-header-cell>
-                                                        <sui-table-header-cell>Note</sui-table-header-cell>
-                                                    </sui-table-row>
-                                                </sui-table-header>
-
-                                                <sui-table-body>
-                                                    <sui-table-row :state="matiere.moyenne ? '' : 'disabled'" v-for="note in matiere.notes" :key="note.id">
-                                                        <sui-table-cell>{{note.devoir}}</sui-table-cell>
-                                                        <sui-table-cell>{{note.coef}}</sui-table-cell>
-                                                        <sui-table-cell><h3 is="sui-header" text-align="center">{{note.valeur+'/'+note.noteSur}}</h3></sui-table-cell>
-                                                    </sui-table-row>
-                                                </sui-table-body>
-                                            </sui-table>
-                                        </sui-accordion-content>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ui placeholder segment" v-else>
-                                <div class="ui icon header">
-                                    <i class="exclamation triangle icon"></i>
-                                    Pas de données pour cette période.
-                                </div>
-                            </div>
-                        </sui-accordion>
-                    </sui-tab-pane>
-                </sui-tab>
             </div>
         </div>
     </q-page>
 </template>
+
+<style>
+    .chip {
+        cursor: pointer;
+    }
+</style>
 
 <script>
     export default {

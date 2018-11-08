@@ -1,12 +1,10 @@
 <template>
     <div class="showcase-top text-center">
         <img src="../assets/logo.png">
-        <div class="q-display-1">Moyenne.info v{{ version }}</div>
+        <div class="q-display-1">Moyenne.info</div>
 
         <p class="caption">
-            Bienvenue sur Moyenne.info, utilisez les boutons ci-dessous pour accèder à la section désirée.
-            <br>
-            <em>Rapport de bug : lucas@decrock.me</em>
+            Connecté en tant que {{ user.prenom + ' ' + user.nom }}.
         </p>
 
         <div class="row justify-center">
@@ -25,6 +23,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -34,9 +33,9 @@
         data() {
             return {
                 sections: [
-                    { title: 'Compte', icon: 'face', link: 'account' },
                     { title: 'Moyennes', icon: 'trending_up', link: 'moyennes' },
-                    { title: 'Notes', icon: 'list', link: 'notes' }
+                    { title: 'Tableau des Notes', icon: 'list', link: 'notes' },
+                    { title: 'A propos', icon: 'info', link: 'about' }
                 ]
             }
         },

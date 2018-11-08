@@ -1,11 +1,11 @@
 <template>
     <q-layout view="lHh Lpr lFf">
         <q-layout-header>
-            <q-toolbar color="">
+            <q-toolbar>
                 <q-btn v-if="logged" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu"></q-btn>
 
                 <q-toolbar-title>
-                    Moyenne.info <q-chip color="red" dense square v-if="logged && beta">BETA ACCESS</q-chip>
+                    Moyenne.info <q-chip color="red" dense square v-if="logged && beta">BETA</q-chip>
                     <div slot="subtitle">Version {{ version }} par Lucas Decrock</div>
                 </q-toolbar-title>
 
@@ -37,7 +37,11 @@
                     </q-item>
                     <q-item to="/notes">
                         <q-item-side icon="list"/>
-                        <q-item-main label="Notes"/>
+                        <q-item-main label="Tableau des Notes"/>
+                    </q-item>
+                    <q-item to="/about">
+                        <q-item-side icon="info"/>
+                        <q-item-main label="A propos"/>
                     </q-item>
                 </q-list>
             </q-list>
@@ -48,14 +52,6 @@
         </q-page-container>
     </q-layout>
 </template>
-
-<style>
-    .q-toolbar {
-        background: #00c6ff;
-        background: -webkit-linear-gradient(45deg,  #0072ff, #00c6ff);
-        background: linear-gradient(45deg, #0072ff, #00c6ff);
-    }
-</style>
 
 <script>
     export default {

@@ -1,83 +1,30 @@
 <template>
     <q-page padding>
         <div class="text-center q-pb-lg">
-            <h1 is="sui-header" style="font-size: 4em">Moyennes</h1>
+            <div class="q-display-3">Moyennes</div>
         </div>
 
-        <div class="row justify-center">
-            <div class="col-md-8">
-                <div class="ui horizontal segments" v-if="periodes.length === 0">
-                    <div class="ui raised segment" v-for="n in 3" :key="n">
-                        <div class="ui placeholder">
-                            <div class="header">
-                                <div class="short line"></div>
-                                <div class="line"></div>
-                            </div>
-
-                            <div class="image" style="max-width: 20%"></div>
-
-                            <div class="paragraph">
-                                <div class="short line"></div>
-                                <div class="very long line"></div>
-                            </div>
+        <div class="row gutter-md justify-center">
+            <div class="col-xs-12 col-md-6 col-lg-3" v-for="periode in periodes" :key="periode.id">
+                <q-card>
+                    <q-card-title>
+                        Trimestre {{ periode.periode.charAt(0) }}
+                        <span slot="subtitle">Trimestre {{!periode.cloture && periode.moyenne ? 'en cours' : periode.cloture ? 'cloturé' : 'à venir'}}</span>
+                    </q-card-title>
+                    <q-card-main>
+                        <div class="text-center q-ma-lg">
+                            <div class="q-display-1">{{ periode.moyenne ? periode.moyenne+'/20' : '--' }}</div>
+                            <div class="q-subheading text-grey">Moyenne Générale</div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="ui segments" v-else>
-                    <div class="ui horizontal segments">
-                        <div class="ui raised segment" v-for="periode in periodes" :key="periode.id">
-                            <h3 is="sui-header">
-                                <sui-button floated="right" size="mini" @click="periode.modalOpen = true">Détails</sui-button>
-                                Trimestre {{ periode.periode.charAt(0) }}
-                                <sui-header-subheader>Trimestre {{!periode.cloture && periode.moyenne ? 'en cours' : periode.cloture ? 'cloturé' : 'à venir'}}</sui-header-subheader>
-                            </h3>
+                        <q-card-separator/>
 
-                            <div class="text-center q-py-lg">
-                                <h2 is="sui-header">
-                                    {{ periode.moyenne ? periode.moyenne+'/20' : '--' }}
-                                    <sui-header-subheader>Moyenne Générale</sui-header-subheader>
-                                </h2>
-                            </div>
-
+                        <blockquote class="q-mt-md">
                             Conseil : {{ periode.dateConseil }}<br>
                             PP : {{ periode.ensembleMatieres.nomPP.replace('¤', ' & ') }}<br>
-
-
-                            <sui-modal v-model="periode.modalOpen">
-                                <sui-modal-header>Moyennes matières {{ periode.periode }}</sui-modal-header>
-                                <sui-modal-content>
-                                    <sui-modal-description>
-                                        <sui-table celled>
-                                            <sui-table-header>
-                                                <sui-table-row>
-                                                    <sui-table-header-cell>Matière</sui-table-header-cell>
-                                                    <sui-table-header-cell>Professeur(s)</sui-table-header-cell>
-                                                    <sui-table-header-cell>Coefficient</sui-table-header-cell>
-                                                    <sui-table-header-cell>Moyenne</sui-table-header-cell>
-                                                </sui-table-row>
-                                            </sui-table-header>
-
-                                            <sui-table-body>
-                                                <sui-table-row :state="matiere.moyenne ? '' : 'disabled'" v-for="matiere in periode.ensembleMatieres.disciplines" :key="matiere.id">
-                                                    <sui-table-cell>{{matiere.discipline}}</sui-table-cell>
-                                                    <sui-table-cell>{{matiere.professeurs.length > 1 ? matiere.professeurs[0].nom +' & '+ matiere.professeurs[1].nom : matiere.professeurs[0].nom}}</sui-table-cell>
-                                                    <sui-table-cell>{{matiere.coef}}</sui-table-cell>
-                                                    <sui-table-cell><h2 is="sui-header" text-align="center">{{matiere.moyenne ? matiere.moyenne+'/20' : '--'}}</h2></sui-table-cell>
-                                                </sui-table-row>
-                                            </sui-table-body>
-                                        </sui-table>
-                                    </sui-modal-description>
-                                </sui-modal-content>
-                                <sui-modal-actions>
-                                    <sui-button type="button" @click.native="periode.modalOpen = false">
-                                        Fermer
-                                    </sui-button>
-                                </sui-modal-actions>
-                            </sui-modal>
-                        </div>
-                    </div>
-                </div>
+                        </blockquote>
+                    </q-card-main>
+                </q-card>
             </div>
         </div>
     </q-page>
@@ -156,7 +103,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
