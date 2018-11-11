@@ -60,20 +60,10 @@
                                 eleves.push({label: account.nom+' '+account.prenom+' ('+account.classe.libelle+')', value: account.id})
                             });
 
-                            this.$q.dialog({
-                                title: 'Qui est-ce ?',
-                                message: 'Choisissez un utilisateur pour continuer.',
-                                options: {
-                                    type: 'radio',
-                                    model: 'accounts',
-                                    items: eleves
-                                }
-                            }).then((id) => {
+                            if (eleves.length === 1) {
                                 localStorage.token = response.data.token;
 
-                                let account = accounts.find(function(account) {
-                                    return account.id === id;
-                                });
+                                let account = accounts[0];
 
                                 localStorage.user = JSON.stringify(account);
                                 localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
@@ -87,7 +77,36 @@
                                 window.bus.$emit('logged-in');
 
                                 this.$router.push('/');
-                            });
+                            } else {
+                                this.$q.dialog({
+                                    title: 'Qui est-ce ?',
+                                    message: 'Choisissez un utilisateur pour continuer.',
+                                    options: {
+                                        type: 'radio',
+                                        model: 'accounts',
+                                        items: eleves
+                                    }
+                                }).then((id) => {
+                                    localStorage.token = response.data.token;
+
+                                    let account = accounts.find(function(account) {
+                                        return account.id === id;
+                                    });
+
+                                    localStorage.user = JSON.stringify(account);
+                                    localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
+
+                                    this.$q.notify({
+                                        message: 'Connexion réussie, bonjour '+account.prenom+' !',
+                                        color: 'primary',
+                                        avatar: account.photo
+                                    });
+
+                                    window.bus.$emit('logged-in');
+
+                                    this.$router.push('/');
+                                });
+                            }
                         } else {
                             this.$q.notify({
                                 message: 'Vos identifiants sont incorrects, vérifiez votre saisie.',

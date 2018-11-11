@@ -36,9 +36,7 @@ Vue.config.productionTip = false;
 
 if (localStorage.token !== undefined) {
     let user = JSON.parse(localStorage.user);
-    if ([1425, 251, 619].indexOf(user.id) >= 0) {
-        Vue.prototype.beta = true;
-    }
+    Vue.prototype.beta = [1425, 251, 619].indexOf(user.id) >= 0;
     Vue.prototype.user = user;
     Vue.prototype.token = localStorage.token;
     Vue.prototype.logged = true;
@@ -48,9 +46,7 @@ if (localStorage.token !== undefined) {
 
 window.bus.$on('logged-in', () => {
     let user = JSON.parse(localStorage.user);
-    if ([1425, 251, 619].indexOf(user.id) >= 0) {
-        Vue.prototype.beta = true;
-    }
+    Vue.prototype.beta = [1425, 251, 619].indexOf(user.id) >= 0;
     Vue.prototype.user = user;
     Vue.prototype.token = localStorage.token;
     Vue.prototype.logged = true;
@@ -67,7 +63,7 @@ window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '1.2';
+Vue.prototype.version = '1.2.1';
 
 new Vue({
   router,

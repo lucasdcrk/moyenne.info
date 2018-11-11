@@ -66,10 +66,10 @@
 
                                     notes.forEach(function (note) {
                                         if (matiere.codeMatiere === note.codeMatiere && periode.idPeriode === note.codePeriode) {
-                                            if (!note.enLettre) {
-                                                let valeur = parseFloat(note.valeur.replace(/,/, '.'));
-                                                let noteSur = parseFloat(note.noteSur.replace(/,/, '.'));
-                                                let coef = parseFloat(note.coef.replace(/,/, '.'));
+                                            if (!note.enLettre && !note.nonSignificatif) {
+                                                let valeur = parseFloat(String(note.valeur).replace(/,/, '.'));
+                                                let noteSur = parseFloat(String(note.noteSur).replace(/,/, '.'));
+                                                let coef = parseFloat(String(note.coef).replace(/,/, '.'));
 
                                                 note.valeur = (20 / noteSur) * valeur;
                                                 note.noteSur = (20 / noteSur) * noteSur;
@@ -90,7 +90,6 @@
                                 });
 
                                 periode.moyenne = Math.round((periode.totalMoyennes / periode.totalCoefs) * 100) / 100;
-                                console.log(periode)
                             });
 
                             this.periodes = periodes;
