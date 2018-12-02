@@ -1,13 +1,11 @@
 {
   "name": "moyenne.info",
-  "homepage": "https://github.com/lucasdcrk/moyenne.info",
   "version": "1.2.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "deploy": "node ./node_modules/vue-gh-pages/index.js"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -27,7 +25,6 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-quasar": "^0.17.1",
-    "vue-gh-pages": "^1.19.0",
     "vue-template-compiler": "^2.5.17"
   }
 }
