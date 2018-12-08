@@ -1,36 +1,58 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
-import Notes from './views/Notes.vue'
-import Moyennes from './views/Moyennes.vue'
-import Login from './views/Login.vue'
-import NotFound from './views/NotFound.vue'
+
+// Containers
+const DefaultContainer = () => import('./containers/DefaultContainer');
+
+// Views
+const Home = () => import('./views/Home');
+const Moyennes = () => import('./views/Moyennes');
+const Notes = () => import('./views/Notes');
+
+const Login = () => import('./views/Login');
+
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
+    base: process.env.BASE_URL,
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: Home
+            component: DefaultContainer,
+            children: [
+                {
+                    path: '/',
+                    name: 'Accueil',
+                    component: Home
+                }
+            ]
+        },
+        {
+            path: '/',
+            name: 'Résultats',
+            component: DefaultContainer,
+            children: [
+                {
+                    path: '/moyennes',
+                    name: 'Moyennes',
+                    component: Moyennes
+                },
+                {
+                    path: '/notes',
+                    name: 'Relevé de Notes',
+                    component: Notes
+                }
+            ]
         },
         {
             path: '/about',
             name: 'about',
-            component: About
-        },
-        {
-            path: '/notes',
-            name: 'notes',
-            component: Notes
-        },
-        {
-            path: '/moyennes',
-            name: 'moyennes',
-            component: Moyennes
+            // route level code-splitting
+            // this generates a separate chunk (about.[hash].js) for this route
+            // which is lazy-loaded when the route is visited.
+            component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
         {
             path: '/login',
@@ -41,7 +63,7 @@ const router = new Router({
         {
             path: '**',
             name: 'notfound',
-            component: NotFound,
+            component: Home,
             meta: { public: true }
         }
     ]

@@ -1,107 +1,44 @@
 <template>
-    <div class="showcase-top text-center">
-        <img src="../assets/logo.png">
-        <div class="q-display-1">Moyenne.info</div>
-
-        <p class="caption">
-            Connecté en tant que {{ user.prenom + ' ' + user.nom }}.
-        </p>
-
-        <div class="row justify-center">
-            <div style="width: 850px; max-width: 90vw;" class="row">
-                <div v-for="section in sections" :key="section.link" class="col-xs-6 col-sm-4 col-md-3">
-                    <div class="card text-center category-link text-primary" @click="show(section.link)">
-                        <q-icon :name="section.icon"/>
-                        <p class="caption">{{ section.title }}</p>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <div class="card text-center category-link text-grey" @click="logout()">
-                        <q-icon name="exit_to_app"/>
-                        <p class="caption">Déconnexion</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+  <div class="animated fadeIn">
+    <div class="text-center">
+      <h1 class="display-4">Bonjour, {{user.prenom}} !</h1>
+      <h4>Bienvenue sur Moyenne.info</h4>
     </div>
+    <b-row class="pt-5">
+      <b-col md="9">
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            Devoirs
+          </div>
+          <div class="text-center">
+            <h1 class="display-2"><i class="icon-close"></i></h1>
+          </div>
+        </b-card>
+      </b-col>
+      <b-col md="3">
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            Horloge
+          </div>
+          <div class="text-center">
+            <h1 class="display-2">{{now.getHours()+':'+now.getMinutes()+':'+now.getSeconds()}}</h1>
+          </div>
+        </b-card>
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'Home',
-        data() {
-            return {
-                sections: [
-                    { title: 'Moyennes', icon: 'trending_up', link: 'moyennes' },
-                    { title: 'Tableau des Notes', icon: 'list', link: 'notes' },
-                    { title: 'A propos', icon: 'info', link: 'about' }
-                ]
-            }
-        },
-        methods: {
-            show (link) {
-                this.$router.push('/'+link)
-            },
-            logout() {
-                window.bus.$emit('loggout');
-            }
-        }
-    }
+  export default {
+      data () {
+          return {
+              now: new Date
+          }
+      },
+
+      created () {
+          setInterval(() => this.now = new Date, 1000)
+      }
+  }
 </script>
-
-<style scoped>
-    .showcase-top {
-        margin-top: 30px;
-    }
-
-    .showcase-top img {
-        margin-bottom: 15px;
-    }
-
-    img {
-        height: 150px;
-        margin-bottom: 15px;
-    }
-
-    .showcase-top {
-        margin-top: 50px;
-        margin-bottom: 35px;
-    }
-
-    .showcase-top .q-alert {
-        max-width: 500px;
-    }
-
-    .card {
-        cursor: pointer;
-        position: relative;
-        padding: 16px;
-    }
-
-    .card .q-icon {
-        font-size: 56px;
-    }
-
-    .card p {
-        color: rgba(0,0,0,0.87);
-        margin: 15px 0 0 0 !important;
-    }
-
-    .card:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        border-radius: 2px;
-        opacity: 0;
-        transition: opacity 0.2s;
-        background: currentColor;
-    }
-
-    .card:hover:before {
-        opacity: 0.4;
-    }
-</style>

@@ -1,37 +1,53 @@
 <template>
-    <q-page padding>
-        <div class="row justify-center">
-            <q-card class="col-sm-10 col-md-6 col-lg-4 col-xl-3">
-                <div class="q-pa-xl">
-                    <div class="text-center">
-                        <img height="100px" src="../assets/logo.png">
-                        <div class="q-display-1">Moyenne.info</div>
-                        <div class="q-headline text-grey">Connexion avec EcoleDirecte</div>
-                    </div>
-
-                    <q-card-main>
-                        <q-alert v-if="errorMessage" class="q-py-sm" type="negative" icon="warning">
-                            {{errorMessage}}
-                        </q-alert>
-
-                        <q-field class="q-py-sm">
-                            <q-input float-label="Nom d'utilisateur" v-model="username" type="text"></q-input>
-                        </q-field>
-
-                        <q-field class="q-py-sm">
-                            <q-input float-label="Mot de passe" v-model="password" type="password"></q-input>
-                        </q-field>
-
-                        <div class="text-center q-my-lg">
-                            <p class="text-italic text-grey"><q-icon name="lock" color="green" /> Connexion sécurisée</p>
-                        </div>
-
-                        <q-btn class="full-width" :loading="loading" @click="login()" size="md" color="primary">Connexion</q-btn>
-                    </q-card-main>
-                </div>
-            </q-card>
+    <div class="app flex-row align-items-center">
+        <div class="container">
+            <b-row class="justify-content-center">
+                <b-col md="8">
+                    <b-card-group>
+                        <b-card no-body class="p-4">
+                            <b-card-body>
+                                <b-form>
+                                    <h1>Moyenne.info</h1>
+                                    <p class="text-muted">Connexion avec vos identifiants EcoleDirecte</p>
+                                    <b-alert v-if="errorMessage" show variant="danger" v-html="errorMessage"></b-alert>
+                                    <b-input-group class="mb-3">
+                                        <b-input-group-prepend>
+                                            <b-input-group-text>
+                                                <i class="icon-user"></i>
+                                            </b-input-group-text>
+                                        </b-input-group-prepend>
+                                        <b-form-input type="text" class="form-control" placeholder="Nom d'utilisateur" autocomplete="username" v-model="username" />
+                                    </b-input-group>
+                                    <b-input-group class="mb-4">
+                                        <b-input-group-prepend>
+                                            <b-input-group-text>
+                                                <i class="icon-lock"></i>
+                                            </b-input-group-text>
+                                        </b-input-group-prepend>
+                                        <b-form-input type="password" class="form-control" placeholder="Mot de passe" autocomplete="current-password" v-model="password" />
+                                    </b-input-group>
+                                    <b-row>
+                                        <b-col cols="6">
+                                            <b-button variant="primary" class="px-4 ld-ext-right" :class="{ running:loading }" @click="login()">Connexion <div class="ld ld-ring ld-spin"></div></b-button>
+                                        </b-col>
+                                    </b-row>
+                                </b-form>
+                            </b-card-body>
+                        </b-card>
+                        <b-card no-body class="text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                            <b-card-body class="text-center">
+                                <div>
+                                    <h2>Important :</h2>
+                                    <p>Cette application a été développée par un étudiant, pas STATIM SAS (société à l'origine d'EcoleDirecte).</p>
+                                    <p>En cas de problème ou pour toute question, merci d'envoyer un email à lucas@decrock.me.</p>
+                                </div>
+                            </b-card-body>
+                        </b-card>
+                    </b-card-group>
+                </b-col>
+            </b-row>
         </div>
-    </q-page>
+    </div>
 </template>
 
 <script>
@@ -68,12 +84,6 @@
                                 localStorage.user = JSON.stringify(account);
                                 localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
 
-                                this.$q.notify({
-                                    message: 'Connexion réussie, bonjour '+account.prenom+' !',
-                                    color: 'primary',
-                                    avatar: account.photo
-                                });
-
                                 window.bus.$emit('logged-in');
 
                                 this.$router.push('/');
@@ -96,44 +106,26 @@
                                     localStorage.user = JSON.stringify(account);
                                     localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
 
-                                    this.$q.notify({
-                                        message: 'Connexion réussie, bonjour '+account.prenom+' !',
-                                        color: 'primary',
-                                        avatar: account.photo
-                                    });
-
                                     window.bus.$emit('logged-in');
 
                                     this.$router.push('/');
                                 });
                             }
                         } else {
-                            this.$q.notify({
-                                message: 'Vos identifiants sont incorrects, vérifiez votre saisie.',
-                                type: 'negative'
-                            })
+                            this.errorMessage = "<strong>Identifiants incorrects</strong>, vérifiez votre nom d'utilisateur et mot de passe."
                         }
                         this.loading = false;
                     })
                     .catch(error => {
-                        this.$q.notify('Une erreur s\'est produite : ' + error);
-                        this.loading = false;
+                        this.errorMessage = "<strong>Erreur interne :</strong> "+error+".";
+                        this.loading = false
                     });
             }
         },
         mounted() {
             if (this.logged) {
-                this.$q.notify({
-                    message: 'Vous êtes déjà connecté.',
-                    type: 'info'
-                });
                 this.$router.push('/');
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>
-

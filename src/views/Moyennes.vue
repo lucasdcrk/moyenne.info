@@ -1,41 +1,29 @@
 <template>
-    <q-page padding>
-        <div class="text-center q-pb-lg">
-            <div class="q-display-3">Moyennes</div>
+    <div class="animated fadeIn">
+        <div class="text-center">
+            <h1 class="display-4">Moyennes</h1>
         </div>
-
-        <div class="row gutter-md justify-center">
-            <div class="col-xs-12 col-md-6 col-lg-3" v-for="periode in periodes" :key="periode.id">
-                <q-card>
-                    <q-card-title>
-                        Trimestre {{ periode.periode.charAt(0) }}
-                        <span slot="subtitle">Trimestre {{!periode.cloture && periode.moyenne ? 'en cours' : periode.cloture ? 'cloturé' : 'à venir'}}</span>
-                    </q-card-title>
-                    <q-card-main>
-                        <div class="text-center q-ma-lg">
-                            <div class="q-display-1">{{ periode.moyenne ? periode.moyenne+'/20' : '--' }}</div>
-                            <div class="q-subheading text-grey">Moyenne Générale</div>
-                        </div>
-
-                        <q-card-separator/>
-
-                        <blockquote class="q-mt-md">
-                            Conseil : {{ periode.dateConseil }}<br>
-                            PP : {{ periode.ensembleMatieres.nomPP.replace('¤', ' & ') }}<br>
-                        </blockquote>
-                    </q-card-main>
-                </q-card>
-            </div>
-        </div>
-    </q-page>
+        <b-row class="pt-5">
+            <b-col v-for="periode in periodes" :key="periode.id">
+                <b-card header-tag="header" footer-tag="footer">
+                    <div slot="header">
+                        Trimestre {{periode.periode.charAt(0)}}
+                        <span class="float-right">Trimestre {{!periode.cloture && periode.moyenne ? 'en cours' : periode.cloture ? 'cloturé' : 'à venir'}}</span>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="display-2">{{periode.moyenne ? periode.moyenne+'/20' : '--'}}</h1>
+                        Moyenne Générale
+                    </div>
+                </b-card>
+            </b-col>
+        </b-row>
+    </div>
 </template>
 
 <script>
     export default {
-        name: 'Notes',
         data() {
             return {
-                loading: false,
                 periodes: []
             }
         },
@@ -44,6 +32,8 @@
         },
         methods: {
             getNotes() {
+                this.$wait.start();
+
                 window.axios.post('eleves/'+this.user.id+'/notes.awp?verbe=get&', 'data={"token": "'+this.token+'"}')
                     .then((response) => {
                         if (response.data.code === 200) {
@@ -54,7 +44,6 @@
                             let notes = response.data.data.notes;
 
                             periodes.forEach(function (periode) {
-                                periode.modalOpen = false;
                                 periode.matieres = [];
                                 periode.totalMoyennes = 0;
                                 periode.totalCoefs = 0;
@@ -94,9 +83,11 @@
 
                             this.periodes = periodes;
                         }
+
+                        this.$wait.end();
                     })
                     .catch(error => {
-                        this.$q.notify('Une erreur s\'est produite : ' + error);
+                        console.log('Une erreur s\'est produite : ' + error);
                     });
             }
         }

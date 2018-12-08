@@ -1,147 +1,21 @@
 <template>
-    <q-layout view="lHh Lpr lFf">
-        <q-layout-header>
-            <q-toolbar>
-                <q-btn v-if="logged" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu"></q-btn>
-
-                <q-toolbar-title>
-                    Moyenne.info <q-chip color="red" dense square v-if="logged && beta">BETA</q-chip>
-                    <div slot="subtitle">Version {{ version }} par Lucas Decrock</div>
-                </q-toolbar-title>
-
-                <div v-if="logged">
-                    <q-btn flat @click="logout()">Déconnexion</q-btn>
-                </div>
-            </q-toolbar>
-        </q-layout-header>
-
-        <q-layout-drawer v-if="logged" v-model="leftDrawerOpen" content-class="bg-grey-2">
-            <div class="row flex-center bg-white" style="height: 115px">
-                <img :src="user.photo" style="width: 75px;">
-                <div class="caption q-ml-md">
-                    {{ user.prenom+' '+user.nom }}
-                    <br>
-                    <q-chip color="primary" dense square v-if="logged && beta">{{ user.classe.libelle }}</q-chip>
-                </div>
-            </div>
-            <q-list no-border link inset-delimiter>
-                <q-list no-border link inset-delimiter>
-                    <q-list-header>Navigation</q-list-header>
-                    <q-item to="/" exact>
-                        <q-item-side icon="home"/>
-                        <q-item-main label="Accueil"/>
-                    </q-item>
-                    <q-item to="/moyennes" exact>
-                        <q-item-side icon="trending_up"/>
-                        <q-item-main label="Moyennes"/>
-                    </q-item>
-                    <q-item to="/notes">
-                        <q-item-side icon="list"/>
-                        <q-item-main label="Tableau des Notes"/>
-                    </q-item>
-                    <q-item to="/about">
-                        <q-item-side icon="info"/>
-                        <q-item-main label="A propos"/>
-                    </q-item>
-                </q-list>
-            </q-list>
-        </q-layout-drawer>
-
-        <q-page-container>
-            <router-view/>
-        </q-page-container>
-    </q-layout>
+    <router-view/>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                leftDrawerOpen: this.$q.platform.is.desktop
-            }
-        },
-        methods: {
-            logout() {
-                this.$q.dialog({
-                    title: 'Déconnexion',
-                    message: 'En cliquant sur continuer, nous supprimerons vos données stockées sur ce navigateur.',
-                    ok: 'Continuer',
-                    cancel: 'Annuler'
-                }).then(() => {
-                    localStorage.clear();
-                    this.$q.notify({
-                        message: 'Déconnexion effectuée avec succès.',
-                        type: 'info'
-                    });
-                    window.bus.$emit('logged-out');
-                    this.$router.push('/login');
-                });
-            }
-        },
-        mounted() {
-            this.$q.addressbarColor.set('#0069ff');
+<style lang="scss">
+    // CoreUI Icons Set
+    @import '~@coreui/icons/css/coreui-icons.min.css';
+    /* Import Font Awesome Icons Set */
+    $fa-font-path: '~font-awesome/fonts/';
+    @import '~font-awesome/scss/font-awesome.scss';
+    /* Import Simple Line Icons Set */
+    $simple-line-font-path: '~simple-line-icons/fonts/';
+    @import '~simple-line-icons/scss/simple-line-icons.scss';
+    /* Import Flag Icons Set */
+    @import '~flag-icon-css/css/flag-icon.min.css';
+    /* Import Bootstrap Vue Styles */
+    @import '~bootstrap-vue/dist/bootstrap-vue.css';
+    // Import Main styles for this application
+    @import 'assets/scss/style';
+</style>
 
-            if (this.logged) {
-                let user = JSON.parse(localStorage.user);
-
-                window.axios.post('E/' + user.id + '/emploidutemps.awp?verbe=get', 'data={"token": "' + localStorage.token + '"}')
-                    .then((response) => {
-                        if (response.data.code !== 200) {
-                            if (localStorage.credentials && localStorage.user) {
-                                let credentials = JSON.parse(localStorage.credentials);
-
-                                this.$q.loading.show({
-                                    spinner: 'q-spinner-radio',
-                                    message: 'Session expirée, reconnexion en cours ...',
-                                    spinnerColor: 'white'
-                                });
-
-                                window.axios.post('login.awp', 'data={"identifiant": "'+credentials.username+'", "motdepasse": "'+credentials.password+'"}')
-                                    .then((response) => {
-                                        if (response.data.code === 200) {
-                                            localStorage.token = response.data.token;
-
-                                            let accounts = response.data.data.accounts[0].profile.eleves;
-
-                                            let account = accounts.find(function(account) {
-                                                return account.id === user.id;
-                                            });
-
-                                            localStorage.user = JSON.stringify(account);
-
-                                            this.$q.loading.hide();
-                                            window.bus.$emit('logged-in');
-
-                                            this.$router.push('/');
-                                        }
-                                    })
-                                    .catch(error => {
-                                        this.$q.notify('Impossible de rafraichir le token.' + error);
-                                        localStorage.clear();
-                                        window.bus.$emit('logged-out');
-                                        this.$q.loading.hide();
-                                        this.$router.push('/login');
-                                    });
-                            } else {
-                                window.bus.$q.notify({
-                                    message: 'Session expirée, merci de vous reconnecter.',
-                                    type: 'negative'
-                                });
-
-                                window.bus.$emit('logged-out');
-
-                                this.$router.push('/login');
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        window.bus.$q.notify('Une erreur s\'est produite lors de la vérification, merci de recharger la page : ' + error);
-                    });
-            }
-
-            window.bus.$on('loggout', () => {
-                this.logout();
-            });
-        }
-    }
-</script>
