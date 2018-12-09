@@ -8,8 +8,14 @@
                 <img class="navbar-brand-minimized" src="../assets/logo-mini.png" width="40px" alt="">
             </b-link>
             <SidebarToggler class="d-md-down-none" display="lg"/>
+            <b-navbar-nav class="d-md-down-none" v-if="user.idEtablissement === '17'">
+                <b-nav-item class="px-3" href="https://discord.gg/mscegd" target="_blank">Serveur Discord NDG</b-nav-item>
+            </b-navbar-nav>
             <b-navbar-nav class="d-md-down-none">
-                <b-nav-item class="px-3" to="/">Vue d'ensemble</b-nav-item>
+                <b-nav-item class="px-3" href="https://github.com/lucasdcrk/moyenne.info" target="_blank">Code Source</b-nav-item>
+            </b-navbar-nav>
+            <b-navbar-nav class="d-md-down-none">
+                <b-nav-item class="px-3" to="/debug">Debug</b-nav-item>
             </b-navbar-nav>
             <b-navbar-nav class="ml-auto">
                 <b-nav-item class="px-3" @click="logout()">Déconnexion</b-nav-item>
@@ -114,12 +120,12 @@
                     },
                     {
                         name: 'Evolution',
-                        url: '/notes',
+                        url: '/evolution',
                         icon: 'icon-chart'
                     },
                     {
-                        name: 'Graphiques',
-                        url: '/notes',
+                        name: 'Graphique',
+                        url: '/graphique',
                         icon: 'icon-pie-chart'
                     },
                     {
@@ -133,7 +139,7 @@
                     },
                     {
                         name: 'Messagerie',
-                        url: '/messagerie',
+                        url: '',
                         icon: 'icon-envelope'
                     },
                     {
@@ -147,12 +153,12 @@
                     },
                     {
                         name: 'FAQ',
-                        url: '/about',
+                        url: '',
                         icon: 'icon-question'
                     },
                     {
                         name: 'A propos',
-                        url: '/about',
+                        url: '',
                         icon: 'icon-info'
                     }
                 ]

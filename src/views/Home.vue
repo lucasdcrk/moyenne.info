@@ -4,23 +4,29 @@
       <h1 class="display-4">Bonjour, {{user.prenom}} !</h1>
       <h4>Bienvenue sur Moyenne.info</h4>
     </div>
-    <b-row class="pt-5">
+    <b-row class="justify-content-center pt-5">
       <b-col md="4">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
             Informations
           </div>
           <p class="lead">Bienvenue sur le nouveau moyenne.info !</p><p>N'hésitez pas à envoyer vos suggestions par email à lucas@decrock.me</p>
+          <h1 v-if="user.classe.libelle === 'Terminale S2' || user.classe.libelle === 'Terminale S1'">TS2 > TS1 :)</h1>
         </b-card>
       </b-col>
-      <b-col md="5">
+      <b-col md="4">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
-            Devoirs
+            Utilisateur
           </div>
-          <div class="text-center">
-            <h3>Cette fonctionalité n'est pas encore prise en charge.</h3>
-          </div>
+          <b-row>
+            <b-col md="9">
+              <h1>{{user.prenom+' '+user.nom}} <small class="text-muted">{{user.classe.libelle}}</small></h1>
+            </b-col>
+            <b-col md="3">
+              <img width="100%" :src="user.photo" alt="">
+            </b-col>
+          </b-row>
         </b-card>
       </b-col>
       <b-col md="3">

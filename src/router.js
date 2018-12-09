@@ -26,6 +26,11 @@ const router = new Router({
                     path: '/',
                     name: 'Accueil',
                     component: Home
+                },
+                {
+                    path: '/debug',
+                    name: 'Debug',
+                    component: () => import('./views/Debug.vue')
                 }
             ]
         },
@@ -43,6 +48,23 @@ const router = new Router({
                     path: '/notes',
                     name: 'Relevé de Notes',
                     component: Notes
+                }
+            ]
+        },
+        {
+            path: '/',
+            name: 'Statistiques',
+            component: DefaultContainer,
+            children: [
+                {
+                    path: '/evolution',
+                    name: 'Évolution',
+                    component: () => import('./views/Evolution.vue')
+                },
+                {
+                    path: '/graphique',
+                    name: 'Graphique',
+                    component: () => import('./views/Graphique.vue')
                 }
             ]
         },

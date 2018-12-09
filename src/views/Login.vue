@@ -7,7 +7,7 @@
                         <b-card no-body class="p-4">
                             <b-card-body>
                                 <b-form>
-                                    <h1>Moyenne.info</h1>
+                                    <h1>Moyenne.info <sup>2.0</sup></h1>
                                     <p class="text-muted">Connexion avec vos identifiants EcoleDirecte</p>
                                     <b-alert v-if="errorMessage" show variant="danger" v-html="errorMessage"></b-alert>
                                     <b-input-group class="mb-3">
@@ -34,7 +34,7 @@
                                 </b-form>
                             </b-card-body>
                         </b-card>
-                        <b-card no-body class="text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                        <b-card no-body class="text-white bg-primary py-5" style="width:44%">
                             <b-card-body class="text-center">
                                 <div>
                                     <h2>Important :</h2>
