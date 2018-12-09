@@ -1,5 +1,5 @@
 <template>
-    <div class="animated fadeIn">
+    <div class="container animated fadeIn">
         <div class="text-center">
             <h1 class="display-4">Moyennes</h1>
         </div>
@@ -11,7 +11,7 @@
                         <span class="float-right">Trimestre {{!periode.cloture && periode.moyenne ? 'en cours' : periode.cloture ? 'cloturé' : 'à venir'}}</span>
                     </div>
                     <div class="text-center">
-                        <h1 class="display-2">{{periode.moyenne ? periode.moyenne+'/20' : '--'}}</h1>
+                        <h1 class="display-3">{{periode.moyenne ? periode.moyenne+'/20' : '--'}}</h1>
                         Moyenne Générale
                     </div>
                 </b-card>

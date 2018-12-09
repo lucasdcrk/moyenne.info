@@ -5,13 +5,21 @@
       <h4>Bienvenue sur Moyenne.info</h4>
     </div>
     <b-row class="pt-5">
-      <b-col md="9">
+      <b-col md="4">
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            Informations
+          </div>
+          <p class="lead">Bienvenue sur le nouveau moyenne.info !</p><p>N'hésitez pas à envoyer vos suggestions par email à lucas@decrock.me</p>
+        </b-card>
+      </b-col>
+      <b-col md="5">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
             Devoirs
           </div>
           <div class="text-center">
-            <h1 class="display-2"><i class="icon-close"></i></h1>
+            <h3>Cette fonctionalité n'est pas encore prise en charge.</h3>
           </div>
         </b-card>
       </b-col>
@@ -21,7 +29,7 @@
             Horloge
           </div>
           <div class="text-center">
-            <h1 class="display-2">{{now.getHours()+':'+now.getMinutes()+':'+now.getSeconds()}}</h1>
+            <h1 class="display-3">{{now.getHours()+':'+now.getMinutes()+':'+now.getSeconds()}}</h1>
           </div>
         </b-card>
       </b-col>
