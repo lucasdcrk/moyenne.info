@@ -28,7 +28,7 @@
                                     </b-input-group>
                                     <b-row>
                                         <b-col cols="6">
-                                            <b-button variant="primary" class="px-4 ld-ext-right" :class="{ running:loading }" @click="login()">Connexion <div class="ld ld-ring ld-spin"></div></b-button>
+                                            <b-button variant="primary" class="px-4 ld-ext-right" :class="{ running: $wait.any }" @click="login()">Connexion <div class="ld ld-ring ld-spin"></div></b-button>
                                         </b-col>
                                     </b-row>
                                 </b-form>
@@ -47,6 +47,12 @@
                 </b-col>
             </b-row>
         </div>
+
+        <b-modal ref="modal" centered busy hide-footer size="sm" title="Qui est-ce ?">
+            <b-form-select v-model="selectedAccount" :options="options" class="mt-4 mb-5"/>
+
+            <b-button :disabled="!selectedAccount" variant="primary" @click="setAccount" block>Continuer</b-button>
+        </b-modal>
     </div>
 </template>
 
@@ -57,68 +63,68 @@
             return {
                 username: null,
                 password: null,
-                loading: false,
+                token: null,
                 accounts: [],
+                selectedAccount: null,
+                options: [],
                 errorMessage: null
             }
         },
         methods: {
+            setAccount: function () {
+                let id = this.selectedAccount;
+
+                let account = this.accounts.find(function(account) {
+                    return account.id === id;
+                });
+
+                localStorage.token = this.token;
+                localStorage.user = JSON.stringify(account);
+                localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
+
+                window.bus.$emit('logged-in');
+
+                this.$wait.end();
+
+                this.$router.push('/');
+            },
             login: function () {
-                this.loading = true;
+                this.$wait.start();
 
                 window.axios.post('login.awp', 'data={"identifiant": "'+this.username+'", "motdepasse": "'+this.password+'"}')
                     .then((response) => {
                         if (response.data.code === 200) {
-                            let accounts = response.data.data.accounts[0].profile.eleves;
-                            let eleves = [];
+                            this.token = response.data.token;
 
-                            accounts.forEach(function (account) {
-                                eleves.push({label: account.nom+' '+account.prenom+' ('+account.classe.libelle+')', value: account.id})
+                            this.options.push({
+                                value: null,
+                                text: 'Choisissez un utilisateur ...'
                             });
 
-                            if (eleves.length === 1) {
-                                localStorage.token = response.data.token;
+                            let eleves = response.data.data.accounts[0].profile.eleves;
 
-                                let account = accounts[0];
+                            eleves.forEach(a => {
+                                this.accounts.push(a);
 
-                                localStorage.user = JSON.stringify(account);
-                                localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
-
-                                window.bus.$emit('logged-in');
-
-                                this.$router.push('/');
-                            } else {
-                                this.$q.dialog({
-                                    title: 'Qui est-ce ?',
-                                    message: 'Choisissez un utilisateur pour continuer.',
-                                    options: {
-                                        type: 'radio',
-                                        model: 'accounts',
-                                        items: eleves
-                                    }
-                                }).then((id) => {
-                                    localStorage.token = response.data.token;
-
-                                    let account = accounts.find(function(account) {
-                                        return account.id === id;
-                                    });
-
-                                    localStorage.user = JSON.stringify(account);
-                                    localStorage.credentials = JSON.stringify({ username: this.username, password: this.password });
-
-                                    window.bus.$emit('logged-in');
-
-                                    this.$router.push('/');
+                                this.options.push({
+                                    value: a.id,
+                                    text: a.prenom+' '+a.nom+' ('+a.classe.libelle+')'
                                 });
+                            });
+
+                            if (this.accounts.length === 1) {
+                                this.selectedAccount = this.accounts[0].id;
+
+                                this.setAccount();
+                            } else {
+                                this.$refs.modal.show();
                             }
                         } else {
                             this.errorMessage = "<strong>Identifiants incorrects</strong>, vérifiez votre nom d'utilisateur et mot de passe."
                         }
-                        this.loading = false;
                     })
                     .catch(error => {
                         this.errorMessage = "<strong>Erreur interne :</strong> "+error+".";
-                        this.loading = false
                     });
             }
         },
