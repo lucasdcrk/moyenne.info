@@ -83,7 +83,6 @@
         data() {
             return {
                 refreshingSession: false,
-                mainLoading: false,
                 nav: [
                     {
                         name: 'Accueil',
@@ -201,6 +200,7 @@
                                             localStorage.user = JSON.stringify(account);
 
                                             this.refreshingSession = false;
+
                                             window.bus.$emit('logged-in');
 
                                             this.$router.push('/');

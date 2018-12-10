@@ -1,9 +1,9 @@
 <template>
-    <div class="animated fadeIn">
+    <div class="animated fadeIn" v-if="periodes.length > 0">
         <div class="container">
             <b-card header="Evolution de votre moyenne sur l'année">
                 <div class="chart-wrapper">
-                    <bar-chart v-if="periodes" :labels="trimestres" :datasets="moyennes" style="max-height: 30vh;"/>
+                    <bar-chart :labels="trimestres" :datasets="moyennes" style="max-height: 30vh;"/>
                 </div>
             </b-card>
         </div>
@@ -20,28 +20,22 @@
         components: { 'bar-chart': BarChart },
         data() {
             return {
-                periodes: null
+                periodes: [],
+                trimestres: [],
+                moyennes: []
             }
         },
         mounted() {
-            this.periodes = this.getPeriodes();
-        },
-        computed: {
-            trimestres: function () {
-                let trimestres = [];
+            this.$wait.start();
 
-                if (this.periodes) {
+            this.getPeriodes()
+                .then(data => {
+                    this.periodes = data;
+
                     this.periodes.forEach(p => {
-                        trimestres.push('Trimestre '+p.periode.charAt(0));
+                        this.trimestres.push('Trimestre '+p.periode.charAt(0));
                     });
-                }
 
-                return trimestres
-            },
-            moyennes: function () {
-                let moyennes = [];
-
-                if (this.periodes) {
                     let moyennesGenerales = [];
                     let moyennesGeneralesClasse = [];
 
@@ -50,7 +44,7 @@
                         moyennesGeneralesClasse.push(p.moyenneClasse);
                     });
 
-                    moyennes.push({
+                    this.moyennes.push({
                         label: 'Votre moyenne',
                         backgroundColor: '#3e95cd',
                         data: moyennesGenerales
@@ -59,10 +53,9 @@
                         backgroundColor: '#3cba9f',
                         data: moyennesGeneralesClasse
                     });
-                }
 
-                return moyennes
-            }
+                    this.$wait.end();
+                });
         }
     }
 </script>

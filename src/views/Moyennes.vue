@@ -1,5 +1,5 @@
 <template>
-    <div class="container animated fadeIn" v-if="periodes">
+    <div class="container animated fadeIn" v-if="periodes.length > 0">
         <div class="text-center">
             <h1 class="display-4">Moyennes</h1>
         </div>
@@ -31,7 +31,13 @@
             }
         },
         mounted() {
-            this.periodes = this.getPeriodes();
+            this.$wait.start();
+
+            this.getPeriodes()
+                .then(data => {
+                    this.periodes = data;
+                    this.$wait.end();
+                });
         }
     }
 </script>
