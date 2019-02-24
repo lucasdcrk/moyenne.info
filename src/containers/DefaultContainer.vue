@@ -126,39 +126,6 @@
                         name: 'Graphique',
                         url: '/graphique',
                         icon: 'icon-pie-chart'
-                    },
-                    {
-                        title: true,
-                        name: 'Administratif',
-                        class: '',
-                        wrapper: {
-                            element: '',
-                            attributes: {}
-                        }
-                    },
-                    {
-                        name: 'Messagerie',
-                        url: '',
-                        icon: 'icon-envelope'
-                    },
-                    {
-                        title: true,
-                        name: 'Autres',
-                        class: '',
-                        wrapper: {
-                            element: '',
-                            attributes: {}
-                        }
-                    },
-                    {
-                        name: 'FAQ',
-                        url: '',
-                        icon: 'icon-question'
-                    },
-                    {
-                        name: 'A propos',
-                        url: '',
-                        icon: 'icon-info'
                     }
                 ]
             }
