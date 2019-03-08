@@ -10,8 +10,23 @@
           <div slot="header">
             Informations
           </div>
-          <p class="lead">Bienvenue sur le nouveau moyenne.info !</p><p>N'hésitez pas à envoyer vos suggestions par email à lucas@decrock.me</p>
-          <h1 v-if="user.classe.libelle === 'Terminale S2' || user.classe.libelle === 'Terminale S1'">TS2 > TS1 :)</h1>
+          <p class="lead">Notes de mise à jour (2.1) :</p>
+          <ul>
+            <li>Ajouté : Alerte fermeture du site</li>
+            <li>Fixé : Page de connexion</li>
+            <li>Fixé : Les notes non significatives ne sont plus prises en compte dans la moyenne</li>
+            <li>Fixé : Bug de chargement infini</li>
+            <li>Retiré : Liens inutiles dans la navbar</li>
+          </ul>
+          <b-alert variant="danger" show>
+            <h4 class="alert-heading">Fermeture du site</h4>
+            <p>
+              Comme vous le savez sûrement je suis en Terminale et je ne pourrais donc pas m'occuper de ce site durant la prochaine année scolaire. <br>
+              De ce fait il fermera définitivement le <strong>1er Juin 2019</strong>. <br>
+              Plaignez vous à l'administration si vous n'êtes pas satisfait d'EcoleDirecte ¯\_(ツ)_/¯. <br>
+              Le code source est en ligne (<a href="https://github.com/lucasdcrk/moyenne.info">lucasdcrk/moyenne.info</a>) donc toute personne avec des compétences de développement web frontend (Javascript / Typescript + Vue + CSS / SASS) pourra le reprendre.
+            </p>
+          </b-alert>
         </b-card>
       </b-col>
       <b-col md="4">
@@ -35,24 +50,10 @@
             Horloge
           </div>
           <div class="text-center">
-            <h1 class="display-3">{{now.getHours()+':'+now.getMinutes()+':'+now.getSeconds()}}</h1>
+            <h1 class="display-3">¯\_(ツ)_/¯</h1>
           </div>
         </b-card>
       </b-col>
     </b-row>
   </div>
 </template>
-
-<script>
-  export default {
-      data () {
-          return {
-              now: new Date
-          }
-      },
-
-      created () {
-          setInterval(() => this.now = new Date, 1000)
-      }
-  }
-</script>

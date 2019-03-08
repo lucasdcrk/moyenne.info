@@ -30,7 +30,7 @@ export default {
 
                                 notes.forEach(function (note) {
                                     if (matiere.codeMatiere === note.codeMatiere && periode.idPeriode === note.codePeriode) {
-                                        if (!note.enLettre) {
+                                        if (!note.enLettre && note.nonSignificatif !== true) {
                                             let valeur = parseFloat(String(note.valeur).replace(/,/, '.'));
                                             let valeurClasse = parseFloat(String(note.moyenneClasse).replace(/,/, '.'));
                                             let noteSur = parseFloat(String(note.noteSur).replace(/,/, '.'));

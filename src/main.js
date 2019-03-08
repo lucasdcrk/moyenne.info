@@ -34,13 +34,61 @@ window.bus.$on('logged-in', () => {
         nom: user.nom,
         classe: user.classe.libelle
     });
+
+    window.axios.post('E/' + user.id + '/emploidutemps.awp?verbe=get', 'data={"token": "' + localStorage.token + '"}')
+        .then((response) => {
+            if (response.data.code !== 200) {
+                if (localStorage.credentials && localStorage.user) {
+                    let credentials = JSON.parse(localStorage.credentials);
+
+                    this.refreshingSession = true;
+
+                    window.axios.post('login.awp', 'data={"identifiant": "' + credentials.username + '", "motdepasse": "' + credentials.password + '"}')
+                        .then((response) => {
+                            if (response.data.code === 200) {
+                                localStorage.token = response.data.token;
+
+                                let accounts = response.data.data.accounts[0].profile.eleves;
+
+                                let account = accounts.find(function (account) {
+                                    return account.id === user.id;
+                                });
+
+                                localStorage.user = JSON.stringify(account);
+
+                                this.refreshingSession = false;
+
+                                window.bus.$emit('logged-in');
+
+                                this.$router.push('/');
+                            }
+                        })
+                        .catch(() => {
+                            localStorage.clear();
+                            window.bus.$emit('logged-out');
+                            this.refreshingSession = false;
+                            this.$router.push('/login');
+                        });
+                } else {
+                    localStorage.clear();
+                    window.bus.$emit('logged-out');
+                    this.$router.push('/login');
+                }
+            }
+        })
+        .catch(() => {
+            localStorage.clear();
+            window.bus.$emit('logged-out');
+            this.refreshingSession = false;
+            this.$router.push('/login');
+        });
 });
 
 window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '2.0';
+Vue.prototype.version = '2.1';
 
 Vue.config.productionTip = false;
 

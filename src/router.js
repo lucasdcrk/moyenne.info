@@ -53,7 +53,7 @@ const router = new Router({
         },
         {
             path: '/',
-            name: 'Statistiques',
+            name: 'Graphiques',
             component: DefaultContainer,
             children: [
                 {
@@ -63,7 +63,7 @@ const router = new Router({
                 },
                 {
                     path: '/graphique',
-                    name: 'Graphique',
+                    name: 'Matières',
                     component: () => import('./views/Graphique.vue')
                 }
             ]

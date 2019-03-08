@@ -7,7 +7,7 @@
                         <b-card no-body class="p-4">
                             <b-card-body>
                                 <b-form>
-                                    <h1>Moyenne.info <sup>2.0</sup></h1>
+                                    <h1>Moyenne.info <sup>{{ version }}</sup></h1>
                                     <p class="text-muted">Connexion avec vos identifiants EcoleDirecte</p>
                                     <b-alert v-if="errorMessage" show variant="danger" v-html="errorMessage"></b-alert>
                                     <b-input-group class="mb-3">
@@ -32,15 +32,6 @@
                                         </b-col>
                                     </b-row>
                                 </b-form>
-                            </b-card-body>
-                        </b-card>
-                        <b-card no-body class="text-white bg-primary py-5" style="width:44%">
-                            <b-card-body class="text-center">
-                                <div>
-                                    <h2>Important :</h2>
-                                    <p>Cette application a été développée par un étudiant, pas STATIM SAS (société à l'origine d'EcoleDirecte).</p>
-                                    <p>En cas de problème ou pour toute question, merci d'envoyer un email à lucas@decrock.me.</p>
-                                </div>
                             </b-card-body>
                         </b-card>
                     </b-card-group>
@@ -120,10 +111,12 @@
                                 this.$refs.modal.show();
                             }
                         } else {
+                            this.$wait.end();
                             this.errorMessage = "<strong>Identifiants incorrects</strong>, vérifiez votre nom d'utilisateur et mot de passe."
                         }
                     })
                     .catch(error => {
+                        this.$wait.end();
                         this.errorMessage = "<strong>Erreur interne :</strong> "+error+".";
                     });
             }
