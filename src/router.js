@@ -31,6 +31,11 @@ const router = new Router({
                     path: '/debug',
                     name: 'Debug',
                     component: () => import('./views/Debug.vue')
+                },
+                {
+                    path: '/logout',
+                    name: 'Deconnexion',
+                    component: () => import('./views/Logout.vue')
                 }
             ]
         },
