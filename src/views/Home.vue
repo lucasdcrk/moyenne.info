@@ -10,6 +10,10 @@
           <div slot="header">
             Informations
           </div>
+          <p class="lead">Notes de mise à jour (2.2 - 18/03/2019) :</p>
+          <ul>
+            <li>Fixé : Bug de chargement infini lorsque la session expire</li>
+          </ul>
           <p class="lead">Notes de mise à jour (2.1) :</p>
           <ul>
             <li>Ajouté : Alerte fermeture du site</li>
@@ -18,6 +22,12 @@
             <li>Fixé : Bug de chargement infini</li>
             <li>Retiré : Liens inutiles dans la navbar</li>
           </ul>
+          <b-alert variant="warning" show>
+            <h4 class="alert-heading">Modification</h4>
+            <p>
+              Update : le site restera en ligne indéfiniment sous une adresse différente mais il ne sera plus mis à jour et risque de cesser de fonctionner.
+            </p>
+          </b-alert>
           <b-alert variant="danger" show>
             <h4 class="alert-heading">Fermeture du site</h4>
             <p>
