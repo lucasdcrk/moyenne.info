@@ -88,7 +88,7 @@ window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '2.1';
+Vue.prototype.version = '2.2';
 
 Vue.config.productionTip = false;
 
