@@ -5,7 +5,7 @@
       <h4>Bienvenue sur Moyenne.info</h4>
     </div>
     <b-row class="justify-content-center pt-5">
-      <b-col md="4">
+      <b-col md="5">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
             Informations
@@ -52,16 +52,6 @@
               <img width="100%" :src="user.photo" alt="">
             </b-col>
           </b-row>
-        </b-card>
-      </b-col>
-      <b-col md="3">
-        <b-card header-tag="header" footer-tag="footer">
-          <div slot="header">
-            Horloge
-          </div>
-          <div class="text-center">
-            <h1 class="display-3">¯\_(ツ)_/¯</h1>
-          </div>
         </b-card>
       </b-col>
     </b-row>
