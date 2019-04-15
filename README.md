@@ -1,5 +1,7 @@
 # moyenne.info
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6ca019df-acae-4e6c-9a3c-e7ca1d35ad85/deploy-status)](https://app.netlify.com/sites/moyenneinfo/deploys)
+
 ## Project setup
 ```
 npm install

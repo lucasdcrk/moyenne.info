@@ -7,7 +7,7 @@
                         <b-card no-body class="p-4">
                             <b-card-body>
                                 <b-form>
-                                    <h1>Moyenne.info <sup>{{ version }}</sup></h1>
+                                    <h1>Moyenne.netlify.com <sup>{{ version }}</sup></h1>
                                     <p class="text-muted">Connexion avec vos identifiants EcoleDirecte</p>
                                     <b-alert v-if="errorMessage" show variant="danger" v-html="errorMessage"></b-alert>
                                     <b-input-group class="mb-3">
