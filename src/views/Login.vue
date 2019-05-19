@@ -125,6 +125,13 @@
             if (this.logged) {
                 this.$router.push('/');
             }
+            
+            if (localStorage.credentials) {
+                let credentials = JSON.parse(localStorage.credentials);
+                
+                this.username = credentials.username;
+                this.password = credentials.password;
+            }
         }
     }
 </script>
