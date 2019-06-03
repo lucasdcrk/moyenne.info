@@ -33,7 +33,7 @@ window.bus.$on('logged-out', () => {
     Vue.prototype.logged = false;
 });
 
-Vue.prototype.version = '2.4';
+Vue.prototype.version = '2.4.2';
 
 Vue.config.productionTip = false;
 
